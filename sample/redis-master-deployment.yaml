@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: master
-        image: redis  # or just image: redis
+        image: redis:3.2.9  # or just image: redis
         resources:
           requests:
             cpu: 100m
