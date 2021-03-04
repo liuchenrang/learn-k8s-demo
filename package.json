@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "etcd3": "^1.1.0",
+    "node-etcd": "^7.0.0"
+  }
+}

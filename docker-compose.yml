@@ -1,0 +1,114 @@
+version: '3'
+# curl --cacert ca.pem --cert server.pem --key server-key.pem -L https://127.0.0.1:12379/v2/keys/foo -XPUT -d value=bar -v
+services:
+  etcd1.k8s.dev:
+    volumes:
+      - ./tls:/etc/tls
+    image: k8s.gcr.io/etcd:3.4.13-0
+    ports:
+      - 12379:2379
+      - 2379:2379
+      - 12380:2380
+    command:
+      - /usr/local/bin/etcd
+      - -name
+      - etcd0
+      - --data-dir
+      - /var/etcd/data
+      - -advertise-client-urls
+      - https://etcd1.k8s.dev:2379
+      - -listen-client-urls
+      - https://0.0.0.0:2379
+      - -initial-advertise-peer-urls
+      - https://etcd1.k8s.dev:2380
+      - -listen-peer-urls
+      - https://0.0.0.0:2380
+      - -initial-cluster
+      - etcd0=https://etcd1.k8s.dev:2380,etcd1=https://etcd2.k8s.dev:2380,etcd2=https://etcd3.k8s.dev:2380
+      - --cert-file
+      - /etc/tls/etcd/server.pem 
+      - --key-file
+      - /etc/tls/etcd/server-key.pem 
+      - --peer-cert-file
+      - /etc/tls/etcd/peer.pem 
+      - --peer-key-file
+      - /etc/tls/etcd/peer-key.pem 
+      - --trusted-ca-file
+      - /etc/tls/ca/ca.pem 
+      - --peer-trusted-ca-file
+      - /etc/tls/ca/ca.pem 
+    
+  etcd2.k8s.dev:
+    volumes:
+      - ./tls:/etc/tls
+    image: k8s.gcr.io/etcd:3.4.13-0
+    ports:
+      - 2379
+    command:
+      - /usr/local/bin/etcd
+      - -name
+      - etcd1
+      - --data-dir
+      - /var/etcd/data
+      - -advertise-client-urls
+      - https://etcd2.k8s.dev:2379
+      - -listen-client-urls
+      - https://0.0.0.0:2379
+      - -initial-advertise-peer-urls
+      - https://etcd2.k8s.dev:2380
+      - -listen-peer-urls
+      - https://0.0.0.0:2380
+      - -initial-cluster
+      - etcd0=https://etcd1.k8s.dev:2380,etcd1=https://etcd2.k8s.dev:2380,etcd2=https://etcd3.k8s.dev:2380
+      - --cert-file
+      - /etc/tls/etcd/server.pem
+      - --key-file
+      - /etc/tls/etcd/server-key.pem
+      - --peer-cert-file
+      - /etc/tls/etcd/peer.pem
+      - --peer-key-file
+      - /etc/tls/etcd/peer-key.pem
+      - --trusted-ca-file
+      - /etc/tls/ca/ca.pem
+      - --peer-trusted-ca-file
+      - /etc/tls/ca/ca.pem
+      
+  etcd3.k8s.dev:
+    volumes:
+      - ./tls:/etc/tls
+    image: k8s.gcr.io/etcd:3.4.13-0
+    ports:
+      - 2379
+    command:
+      - /usr/local/bin/etcd
+      - -name
+      - etcd2
+      - --data-dir
+      - /var/etcd/data
+      - -advertise-client-urls
+      - https://etcd2:2379
+      - -listen-client-urls
+      - https://0.0.0.0:2379
+      - -initial-advertise-peer-urls
+      - https://etcd3.k8s.dev:2380
+      - -listen-peer-urls
+      - https://0.0.0.0:2380
+      - -initial-cluster
+      - etcd0=https://etcd1.k8s.dev:2380,etcd1=https://etcd2.k8s.dev:2380,etcd2=https://etcd3.k8s.dev:2380
+      - --cert-file
+      - /etc/tls/etcd/server.pem
+      - --key-file
+      - /etc/tls/etcd/server-key.pem
+      - --peer-cert-file
+      - /etc/tls/etcd/peer.pem
+      - --peer-key-file
+      - /etc/tls/etcd/peer-key.pem
+      - --trusted-ca-file
+      - /etc/tls/ca/ca.pem
+      - --peer-trusted-ca-file
+      - /etc/tls/ca/ca.pem
+
+volumes:
+  etcd1.k8s.dev:
+  etcd2.k8s.dev:
+  etcd3.k8s.dev:

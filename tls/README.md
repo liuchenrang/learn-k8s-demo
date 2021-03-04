@@ -1,0 +1,2 @@
+cfssl gencert -ca=../ca/ca.pem -ca-key=../ca/ca-key.pem -config=../ca/ca-config.json -profile=server server-csr.json | cfssljson -bare server
+cfssl gencert -ca=../ca/ca.pem -ca-key=../ca/ca-key.pem -config=../ca/ca-config.json -profile=peer server-csr.json | cfssljson -bare peer
