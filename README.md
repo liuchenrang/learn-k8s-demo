@@ -365,3 +365,4 @@ istioctl manifest generate --set profile=demo | kubectl delete -f -
 ```
 
 
+# learn-k8s-demo
